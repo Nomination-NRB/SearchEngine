@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>SZTU News Search Engine</title>
+    <style type="text/css">
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e8e8e8;
+            background-attachment: fixed;
+            background-image: url('/static/warma3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: repeat;
+        }
+
+        #footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #footer p {
+            margin-left: 10px;
+            margin-top: 12px;
+        }
+
+
+        #container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        #header {
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin: 0;
+            color: #444;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            margin: 0;
+        }
+
+        input[type="text"] {
+            width: 60%;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 17px;
+            background-color: #4a90e2;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+            margin-left: 5px;
+            font-weight: bold;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            letter-spacing: 4px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+        }
+
+        #doc {
+            width: 80%;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        #doc p {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #444;
+        }
+
+        #doc h2 {
+            font-size: 24px;
+            margin: 0;
+            color: #444;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        #doc a {
+            color: #4a90e2;
+            text-decoration: none;
+        }
+
+        #doc a:hover {
+            text-decoration: underline;
+        }
+
+        .highlight {
+            /* color: grey; */
+            background-color: yellow;
+            font-weight: bold;
+            /* 可选，如果需要加粗显示匹配的关键词 */
+        }
+
+        .ellipsis {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+
+        #related-searches {
+            border-bottom: 1px solid #ccc;
+            padding: 0 0 10px 0;
+
+        }
+
+        #related-searches h2 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        #related-searches ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #related-searches li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        #related-searches li a {
+            color: #4a90e2;
+            text-decoration: none;
+        }
+
+        #related-searches li a:hover {
+            text-decoration: underline;
+        }
+
+        .page-link {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            line-height: 30px;
+            padding: 5px 10px;
+            margin: 0 5px;
+            border: 1px solid #4a90e2;
+            border-radius: 3px;
+            box-shadow: 0 0 3px #4a90e2;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .page-link:hover {
+            background-color: #4a90e2;
+            color: #fff;
+        }
+
+        .page-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .page-list li {
+            list-style: none;
+            text-align: center;
+            margin: 0 5px;
+        }
+
+        .page-link {
+            margin: 3px 5px;
+        }
+    </style>
+    <script>
+        function highlightKeywords() {
+            var keywords = "{{ key }}".split(" "); // 将关键词拆分成单个词
+            if (keywords.length > 0) {
+                var docs = document.getElementsByClassName("jiacu");
+                for (var i = 0; i < docs.length; i++) {
+                    var doc = docs[i];
+                    var content = doc.innerHTML;
+                    for (var j = 0; j < keywords.length; j++) {
+                        var keyword = keywords[j];
+                        var highlightedContent = content.replace(new RegExp(keyword, "gi"), "<span class=\"highlight\">$&</span>");
+                        content = highlightedContent; // 更新高亮后的内容
+                    }
+                    doc.innerHTML = highlightedContent;   //原来是highlightedContent
+                }
+            }
+        }
+    </script>
+</head>
+
+<body onload="highlightKeywords()">
+    <div id="container">
+        <div id="header">
+            <h1>
+                <img src="/static/duck.png" style="vertical-align: middle; height: 110px; opacity: 0.9;">
+                &nbsp;SZTU Search Engine&nbsp;
+                <img src="/static/star.png" style="vertical-align: middle; height: 110px; opacity: 0.8;">
+            </h1>
+            <form action="/search/" method="POST">
+                <p>
+                    {% if key %}
+                    <input type="text" name="key_word" placeholder="请输入关键词" value="{{origin}}">
+                    {% else %}
+                    <input type="text" name="key_word" placeholder="请输入关键词" value="{{origin}}">
+                    {% endif %}
+                    <input type="submit" value="搜索">
+                </p>
+            </form>
+        </div>
+        <hr>
+        {% block high_search %}
+        {% endblock %}
+        {% if error %}
+        {% for doc in docs %}
+        <div class="jiacu">
+            <div id="doc">
+                <ul id="navigation">
+                    <p>
+                        <big><a href="/search/{{doc.id}}/" target="_blank">{{doc.title}}</a></big>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <strong><span style="font-size: 25px; color: #FFB266;">{{ '{:.2f}'.format(doc.score)
+                                }}</span></strong>
+                    </p>
+                    <p class="ellipsis">{% autoescape off %}{{ doc.body }}{% endautoescape %}</p>
+                    <p style="font-size: 14px; margin-top: 8px;">
+                        <span>{{ doc.time }}</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                        <span style="font-size: 14px;">source: {{ doc.source }}</span>
+                    </p>
+                </ul>
+            </div>
+        </div>
+        <br />
+        {% endfor %}
+        {% block next %}
+        {% if page %}
+        {% set start_page = page[0] %}
+        {% set end_page = 10 %}
+        {% if end_page > page[-1] %}
+        {% set end_page = page[-1] %}
+        {% endif %}
+        {# <ul style="display: inline;">#}
+            {# {% for i in range(start_page, end_page+1) %}#}
+            {# <li style="display: inline;">#}
+                {# <a class="page-link" href="/search/page/{{ i }}/">{{ i }}</a>#}
+                {# </li>#}
+            {# {% endfor %}#}
+            {# {% if end_page < page[-1] %} <li style="display: inline;"><span>...</span></li>#}
+                {# <li style="display: inline;"><a class="page-link" href="/search/page/{{ page[-1] }}/">{{ page[-1]
+                        }}</a></li>#}
+                {# {% endif %}#}
+                {# {% if end_page + 1 <= page[-1] %}#} {# {% endif %}#} {# </ul>#}
+                    {% set maxPage = page[-1] %}
+                    <ul class="page-list">
+                        {% for i in range(start_page, maxPage+1) %}
+                        <li><a class="page-link" href="/search/page/{{ i }}/">{{ i }}</a></li>
+                        {% endfor %}
+                    </ul>
+
+                    {% endif %}
+                    {% endblock %}
+
+
+
+                    {% else %}
+                    <p>Sorry, no web pages found for your search!</p>
+                    {% endif %}
+                    <div id="footer">
+                        <p>@2023 人工智能搜索引擎小队作品</p>
+                        <img src="/static/shark.png"
+                            style="vertical-align: top; height: 40px; opacity: 0.9; margin-bottom: 24px; margin-left: 5px;">
+                    </div>
+    </div>
+
+    <script>
+        const links = document.querySelectorAll('#related-searches a');
+
+        links.forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault();
+
+                const relatedSearch = event.target.textContent;
+
+                const input = document.querySelector('input[name="key_word"]');
+                input.value = relatedSearch;
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>

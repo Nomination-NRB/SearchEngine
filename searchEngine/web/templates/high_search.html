@@ -1,0 +1,40 @@
+{% extends "search.html" %}
+{% block high_search%}
+
+    <div id="related-searches">
+    <h2>相关搜索</h2>
+    <ul>
+        {% for related_search in related_searches %}
+        <li><a href="javascript:void(0)">{{ related_search }}</a></li>
+        {% endfor %}
+    </ul>
+    </div>
+
+<div id="select">
+    <ul>
+        <form name="search" action="/search/{{key}}/" method="POST">
+            <p style="display: inline-block; margin-right: 10px; font-size: 14px;">请选择排序方式：</p>
+            <select name="order" style="display: inline-block; width: 120px; height: 30px; background-color: #f5f5f5; border: 1px solid #ccc; border-radius: 4px; vertical-align: middle; font-size: 16px;">
+                <option value="0" {% if checked[0]%}selected{% endif %}>相关度</option>
+                <option value="1" {% if checked[1] %}selected{% endif %}>时间</option>
+                <option value="2" {% if checked[2] %}selected{% endif %}>热度</option>
+            </select>
+            <input type="submit"
+                   value="OK"
+                   class="ok-button"
+                   style="  display: inline-block;
+                            height: 35px;
+                            line-height: 0px;
+                            background-color: #4a90e2;
+                            color: #fff;
+                            vertical-align: middle;
+                            border-radius: 10%;
+                            text-align: left;
+                            font-weight: bold;
+                            cursor: pointer;
+                            font-size: 18px;
+                            font-family: Arial;">
+            </form>
+    </ul>
+</div>
+{% endblock %}

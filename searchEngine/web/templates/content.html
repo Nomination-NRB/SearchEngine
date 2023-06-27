@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{doc.title}}</title>
+    <style type="text/css">
+        body {
+            background-color: #e8e8e8;
+            background-attachment: fixed;
+            background-image: url('{{ url_for("static", filename="warma3.jpg") }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: repeat;
+        }
+
+        #footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #footer p {
+            margin-left: 10px;
+            margin-top: 12px;
+        }
+
+
+        #container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 50px;
+            box-shadow: 0 0 100px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 20px;
+        }
+        h1, h2 {
+            font-size: 36px;
+            margin: 0;
+            color: #444;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        a {
+            color: #4a90e2;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 20px 0;
+        }
+
+        .highlight {
+            background-color: yellow;
+        }
+
+        .ellipsis {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+    <script>
+        function highlightKeywords() {
+            var keywords = "{{ key }}".split(" "); // 将关键词拆分成单个词
+            if (keywords.length > 0) {
+                var docs = document.getElementsByClassName("jiacu");
+                for (var i = 0; i < docs.length; i++) {
+                    var doc = docs[i];
+                    var content = doc.innerHTML;
+                    for (var j = 0; j < keywords.length; j++) {
+                        var keyword = keywords[j];
+                        var highlightedContent = content.replace(new RegExp(keyword, "gi"), "<span class=\"highlight\">$&</span>");
+                        content = highlightedContent; // 更新高亮后的内容
+                    }
+                    doc.innerHTML = highlightedContent;
+                }
+            }
+        }
+    </script>
+</head>
+
+<body onload="highlightKeywords()">
+    <div id="container">
+        <div id="basic" align="center">
+            <h1>{{doc.title}}</h1>
+            <p>{{doc.datetime}}</p>
+            <p>source: {{doc.source}}</p>
+        </div>
+        <hr/>
+        <div id="detail" style="text-align: left;">
+            <table width="600" border="0">
+                <tr>
+                    <p class="jiacu" id="doc-body">{{doc.body}}</p>
+                </tr>
+            </table>
+        </div>
+        <script>
+            function insertLineBreaks() {
+  const docBody = document.getElementById('doc-body');
+  const content = docBody.textContent.trim();
+
+  // 匹配成对的双引号中的内容
+  const quotePattern = /“([^”]*?)”/g;
+  const pairsOfQuotes = content.match(quotePattern);
+
+  // 将成对的双引号中的内容替换成占位符
+  const placeholder = '%%__QUOTE__%%';
+  const newContent = content.replace(quotePattern, placeholder);
+
+  // 按照句号分割成不同的句子
+    const pattern = /[^.。!?！？]+[.。!?！？]+/g;
+    const sentences = newContent.match(pattern);
+
+  // 对每个句子进行判断是否需要添加换行符
+  const formattedSentences = [];
+  sentences.forEach((sentence, index) => {
+    // 判断当前句子是否在成对的双引号中
+    const isInQuotes = pairsOfQuotes.indexOf(sentence) !== -1 || pairsOfQuotes.indexOf(sentences[index + 1]) !== -1;
+
+    // 判断当前句子中是否有逗号和成对的双引号
+    const hasComma = sentence.indexOf('，') !== -1;
+    const hasQuotes = sentence.indexOf('“') !== -1 || sentence.indexOf('”') !== -1;
+
+    // 判断句子前12个字符中是否有逗号
+    const subStr = sentence.substring(0, 12);
+    const subStrHasComma = subStr.indexOf('，') !== -1;
+
+    // 判断句子是否以句号结尾
+    const endsWithPeriod = sentence.endsWith('。');
+
+    // 根据是否有逗号和是否在成对的双引号中来判断是否需要添加换行符
+    let shouldBreak = false;
+    if (hasComma && !hasQuotes && subStrHasComma && !isInQuotes) {
+      shouldBreak = true;
+    }
+
+    // 在句号后添加换行符
+    const ending = shouldBreak ? (endsWithPeriod ? '<br><br>' : '<br><br>') : '';
+
+    // 将句子和换行符拼接起来，并存储在新数组中
+    formattedSentences.push(sentence + ending);
+  });
+
+  // 将所有句子拼接起来，然后将拼接后的结果设置为文档的内容
+  const newContentWithLineBreaks = formattedSentences.join('');
+
+  // 将占位符替换回成对的双引号中的内容
+  const finalContent = newContentWithLineBreaks.replace(new RegExp(placeholder, 'g'), () => {
+    return pairsOfQuotes.shift();
+  });
+
+  docBody.innerHTML = finalContent;
+}
+
+            window.onload = function() {
+              insertLineBreaks();
+              highlightKeywords();
+            }
+        </script>
+        <hr/>
+        <div align="center">
+            <table width="1000" border="0">
+                <tr>
+                    <h2>推荐阅读</h2>
+                    <br>
+                </tr>
+                    {% for each in doc.extra %}
+                <tr>
+                    <a href="/search/{{each.id}}/" target="_blank">{{each.title}}</a>
+                    <br>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <br>
+        <div id="footer">
+            <p>@2023 人工智能搜索引擎小队作品</p>
+            <img src='{{ url_for("static", filename="shark.png") }}' style="vertical-align: top; height: 40px; opacity: 0.9; margin-bottom: 24px; margin-left: 5px;">
+        </div>
+    </div>
+</body>
+</html>
