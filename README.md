@@ -111,9 +111,22 @@ git clone https://github.com/Nomination-NRB/SearchEngine
 pip install -r requirements.txt
 ```
 
+**注意注意注意**：词汇扩展所需的词库需要自己下载：[词库](https://pan.baidu.com/s/1svFOwFBKnnlsqrF1t99Lnw)
 
+下载后将文件解压放到路径：**searchEngine/data/learning_source/**
 
+## 运行
 
+1. 使用现成数据库里的数据
+   1. 运行main.py文件，打开本地链接即可（由于使用词库扩展搜索，运行时间较长，第一次运行大概1-2min）
+2. 使用自己的数据
+   1. 根据自己的数据特点，将数据存储到xml文件中（可以参考convert_json_to_xml.py）
+   2. 运行setup.py构建倒排索引，推荐阅读，更新词频，数据库文件
+   3. 运行main.py文件，打开本地链接即可（由于使用词库扩展搜索，运行时间较长，第一次运行大概1-2min）
+
+## 参考
+
+[01joy/news-search-engine: 新闻搜索引擎 (github.com)](https://github.com/01joy/news-search-engine)
 
 
 
