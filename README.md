@@ -44,15 +44,6 @@ json格式：title标题，content正文，keywords关键词，desc描述，sour
 }
 ```
 
-## 总览
-
-![1.png](https://img1.imgtp.com/2023/06/27/X2f4PoZn.png)
-
-![2.png](https://img1.imgtp.com/2023/06/27/zvBxIlBi.png)
-
-![3.png](https://img1.imgtp.com/2023/06/27/Gk7vZtMG.png)
-
-
 
 ## 目录
 
