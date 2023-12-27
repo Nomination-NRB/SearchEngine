@@ -1,5 +1,11 @@
 # 新闻搜索引擎
 简易的搜索引擎
+
+![8eec58c0965eff97c00b47f13a605b8](https://github.com/Nomination-NRB/SearchEngine/assets/83486284/9a18ea47-c2ba-471e-a021-1daf637ac212)
+
+![e19ae8bc4976db93b8f7a96e5ffc959](https://github.com/Nomination-NRB/SearchEngine/assets/83486284/8b6eaa62-3059-47b3-9c46-4423948946b2)
+
+
 ## 技术栈
 
 前端：HTML，Django语法
